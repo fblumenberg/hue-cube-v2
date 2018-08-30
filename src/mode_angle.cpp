@@ -1,11 +1,13 @@
 #include <Arduino.h>
 
-#include "hue_cube.h"
+#include "mode_angle.h"
 
-void angleSetup() {
+void AngleLightMode::setup()
+{
 }
 
-int angleLoop() {
+int AngleLightMode::loop()
+{
 
   // Tmp/340.00+36.53  //equation for temperature in degrees C from datasheet
 

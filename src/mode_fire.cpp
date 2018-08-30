@@ -1,19 +1,12 @@
 #include <Arduino.h>
 
 #include "hue_cube.h"
+#include "mode_fire.h"
 
-static int16_t s; // anim speed
-static int16_t r; // amount of red
-static float f, rf, gf;
-
-void fireSetup()
+void FireLightMode::flicker(cRGB *rgb)
 {
-    s = 33;
-    r = 120;
-}
+    float f, rf, gf;
 
-void flicker(cRGB *rgb)
-{
     f = random(64) - 20; // colors get brighter
     rf = random(16) - 8;
     gf = random(16) - 6; // yellows are more often
@@ -36,9 +29,14 @@ void flicker(cRGB *rgb)
     rgb->r = rgb->r - 100 >= rgb->g ? rgb->r - 50 : rgb->r;
 }
 
-int fireLoop()
+void FireLightMode::setup()
 {
+    s = 33;
+    r = 120;
+}
 
+int FireLightMode::loop()
+{
     if (abs(AcXf) > CHANGE_FACTOR)
     {
         r = r + (AcXf * (1.0 / CHANGE_FACTOR));
@@ -65,5 +63,5 @@ int fireLoop()
 
     LED.sync();
 
-    return 1000/s;
+    return 1000 / s;
 }

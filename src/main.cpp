@@ -2,6 +2,7 @@
 #include <Wire.h>
 
 #include "hue_cube.h"
+#include "modes.h"
 
 #define MPUADDR 0x68
 
@@ -35,15 +36,7 @@ static void readMPUValues()
     AcZf = AcZf * 0.7 + 0.3 * (AcZ); // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
 }
 
-enum Mode
-{
-    Fire = 1,
-    Tilt,
-    Angle,
-    LastMode
-};
-
-int currentMode = Fire;
+LightMode *currentMode;
 
 void setup()
 {
@@ -57,9 +50,8 @@ void setup()
     Wire.endTransmission(true);
     LED.setOutput(LED_PIN);
 
-    fireSetup();
-    tiltSetup();
-    angleSetup();
+    setupModes();
+    currentMode = activeLightMode();
 }
 
 unsigned long nextModeLoop;
@@ -76,11 +68,7 @@ void loop()
         {
             Serial.print("Changed the mode ");
 
-            currentMode++;
-            if (currentMode == LastMode)
-                currentMode = Fire;
-
-            Serial.println(currentMode);
+            currentMode = nextLightMode();
 
             for (uint16_t i = 0; i < NR_OF_LED; i++)
             {
@@ -119,20 +107,7 @@ void loop()
 
     if (millis() >= nextModeLoop)
     {
-        int delay = 500;
-        switch (currentMode)
-        {
-        case Fire:
-            delay = fireLoop();
-            break;
-        case Tilt:
-            delay = tiltLoop();
-            break;
-        case Angle:
-            delay = angleLoop();
-            break;
-        }
-
+        int delay = currentMode->loop();
         nextModeLoop = millis() + delay;
     }
     delay(1);

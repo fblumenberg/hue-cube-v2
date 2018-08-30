@@ -1,15 +1,12 @@
 #include <Arduino.h>
 
-#include "hue_cube.h"
+#include "mode_tilt.h"
 
-void tiltSetup()
+void TiltLightMode::setup()
 {
 }
 
-static int16_t h = 0, s = 0, v = 60;
-static float change;
-
-int tiltLoop()
+int TiltLightMode::loop()
 {
 
   if (abs(AcXf) > CHANGE_FACTOR)
