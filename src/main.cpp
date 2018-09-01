@@ -70,6 +70,8 @@ void loop()
 
             currentMode = nextLightMode();
 
+            Serial.println(currentMode->name());
+
             for (uint16_t i = 0; i < NR_OF_LED; i++)
             {
                 leds[i] = black;

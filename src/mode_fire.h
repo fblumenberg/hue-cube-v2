@@ -11,6 +11,7 @@ class FireLightMode : public LightMode
 
 public:
   FireLightMode(){};
+  String name() { return "Fire"; };
 
   void setup();
   int loop();

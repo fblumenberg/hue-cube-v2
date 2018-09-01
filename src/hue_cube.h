@@ -21,6 +21,7 @@ extern int16_t AcXf, AcYf, AcZf;
 class LightMode
 {
 public:
+  virtual String name() = 0;
   virtual void setup() = 0;
   virtual int loop() = 0;
 };

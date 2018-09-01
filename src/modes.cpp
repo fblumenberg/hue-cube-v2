@@ -6,12 +6,12 @@
 #include "mode_tilt.h"
 #include "mode_rainbow.h"
 
-static int currentMode = Fire;
+static int currentMode = Rainbow;
 
 static FireLightMode fireMode;
-static FireLightMode tiltMode;
-static FireLightMode angleMode;
-static FireLightMode rainbowMode;
+static TiltLightMode tiltMode;
+static AngleLightMode angleMode;
+static RainbowLightMode rainbowMode;
 
 static LightMode *modes[] = {
     &fireMode,
@@ -24,6 +24,9 @@ void setupModes()
 {
     for (int m = Fire; m < LastMode; m++)
     {
+        Serial.print("Setup ");
+        Serial.print(m);
+        Serial.println(modes[m]->name());
         modes[m]->setup();
     }
 }
@@ -35,9 +38,17 @@ LightMode *activeLightMode()
 
 LightMode *nextLightMode()
 {
+    Serial.print("Current mode ");
+    Serial.println(currentMode);
     currentMode++;
     if (currentMode == LastMode)
         currentMode = Fire;
+    Serial.print("Current mode ");
+    Serial.println(currentMode);
 
-    return modes[currentMode];
+    LightMode *m = modes[currentMode];
+    Serial.print((unsigned long)m);
+    Serial.println(m->name());
+
+    return m;
 }

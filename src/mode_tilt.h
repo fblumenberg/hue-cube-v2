@@ -8,6 +8,7 @@ class TiltLightMode : public LightMode
 
 public:
   TiltLightMode(){};
+  String name() { return "Tilt"; };
 
   void setup();
   int loop();

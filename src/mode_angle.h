@@ -6,6 +6,7 @@ class AngleLightMode : public LightMode
 {
 public:
   AngleLightMode(){};
+  String name() { return "Angle"; };
 
   void setup();
   int loop();
